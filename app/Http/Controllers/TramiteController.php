@@ -160,7 +160,15 @@ class TramiteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $tramite = Tramite::find($id);
+            $tramite->delete();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente')->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
+        return redirect(route('tramites.index'));
+        } catch (\Throwable $th) {
+            Alert::error('¡Error!', 'Error inesperado al eliminar el tramite')->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
+            return redirect(route('tramites.index'));
+        }
     }
 
     public function export(Request $request)
