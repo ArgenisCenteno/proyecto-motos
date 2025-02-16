@@ -25,12 +25,15 @@ class CuentaPorCobrarController extends Controller
         if ($user->hasRole('superAdmin')) {
             // Si es superAdmin, obtiene todas las cuentas por cobrar
             $cuentasPorCobrar = CuentaPorCobrar::with('user')->orderBy('id', 'DESC')->get();
-        } elseif ($user->hasRole('cliente')) {
+        } elseif ($user->hasRole('cliente')) {  
             // Si es Cliente, obtiene solo las cuentas por cobrar de su usuario
             $cuentasPorCobrar = CuentaPorCobrar::with('user')->where('user_id', $user->id)->orderBy('id', 'DESC')->get();
-        } else {
+        } else {  
+           
             // Manejo para otros roles si es necesario (opcional)
-            $cuentasPorCobrar = collect(); // o puedes manejar un caso diferente
+            $cuentasPorCobrar = CuentaPorCobrar::whereHas('viaje', function ($query) {
+                $query->where('conductor_id',  Auth::user()->id); // Filtra por el conductor autenticado
+            })->get();
         }
 
         return DataTables::of($cuentasPorCobrar)

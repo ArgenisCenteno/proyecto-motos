@@ -34,7 +34,8 @@
                
                 { data: 'fecha', name: 'fecha' },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false },
-            ]
+            ],
+            order: [[0, 'DESC']],
         });
     });
 

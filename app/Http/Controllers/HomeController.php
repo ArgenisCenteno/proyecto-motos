@@ -17,6 +17,7 @@ use App\Models\Venta;
 use App\Models\Viaje;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -63,14 +64,75 @@ class HomeController extends Controller
         $meses = [];
         $viajesData = [];
 
+        $userId = Auth::user()->id;
+
+    // Initialize the counts
+    $viajesIniciados = 0;
+    $viajesCancelados = 0;
+    $viajesFinalizados = 0;
+    $viajesPendientes = 0;
+
+    if (Auth::user()->hasRole('cliente')) {
+        // Count trips for the customer (user_id)
+        $viajesIniciados = Viaje::where('user_id', $userId)
+            ->where('estado', 'Iniciado')
+            ->count();
+
+        $viajesCancelados = Viaje::where('user_id', $userId)
+            ->where('estado', 'Cancelado')
+            ->count();
+
+        $viajesFinalizados = Viaje::where('user_id', $userId)
+            ->where('estado', 'Finalizado')
+            ->count();
+
+        $viajesPendientes = Viaje::where('user_id', $userId)
+            ->where('estado', 'Pendiente')
+            ->count();
+    } elseif (Auth::user()->hasRole('conductor')) {
+        // Count trips for the driver (conductor_id)
+        $viajesIniciados = Viaje::where('conductor_id', $userId)
+            ->where('estado', 'Iniciado')
+            ->count();
+
+            
+
+        $viajesCancelados = Viaje::where('conductor_id', $userId)
+            ->where('estado', 'Cancelado')
+            ->count();
+
+        $viajesFinalizados = Viaje::where('conductor_id', $userId)
+            ->where('estado', 'Finalizado')
+            ->count();
+
+        $viajesPendientes = Viaje::where('conductor_id', $userId)
+            ->where('estado', 'Pendiente')
+            ->count();
+    }
+
+
         // Map the data into arrays
         foreach ($viajes as $venta) {
             // Carbon to get the full month name (January, February, etc.)
             $meses[] = Carbon::createFromFormat('m', $venta->month)->format('F');
             $viajesData[] = $venta->total_sales;
         }
-        return view('home', compact('meses','viajesData','totalTramites', 'totalPasajeros', 'totalConductores', 'totalVehiculos', 'totalConductoresRegistrados', 'totalServicios', 'totalPagos', 'totalViajes'));
-
+        return view('home', compact(
+            'meses',
+            'viajesData',
+            'totalTramites',
+            'totalPasajeros',
+            'totalConductores',
+            'totalVehiculos',
+            'totalConductoresRegistrados',
+            'totalServicios',
+            'totalPagos',
+            'totalViajes',
+            'viajesIniciados', // Added
+            'viajesCancelados', // Added
+            'viajesFinalizados', // Added
+            'viajesPendientes'  // Added
+        ));
     }
     
   

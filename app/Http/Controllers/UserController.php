@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsuariosExport;
 use App\Models\DatosBancario;
 use App\Models\RegistroConductor;
 use App\Models\Sector;
@@ -10,12 +11,13 @@ use App\Models\Tramite;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Alert;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -24,8 +26,13 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::with('roles')->get(); // Use `with` to eager load roles
-
+            if(Auth::user()->hasRole('superAdmin')){
+                $users = User::with('roles')->get(); // Use `with` to eager load roles
+    
+            }else{
+                $users = User::with('roles')->where('id', Auth::user()->id)->get(); // Use `with` to eager load roles
+    
+            }
             return DataTables::of($users)
                 ->addColumn('role', function ($row) {
                     $roles = $row->getRoleNames(); // Use getRoleNames() to get assigned roles
@@ -100,7 +107,16 @@ class UserController extends Controller
         ]);
 
         // Manejar la subida de la foto de perfil
-
+        if ($request->role === 'conductor') {
+            $vehiculo = Vehicle::where('placa', $request->placa)->first();
+            if ($vehiculo) {
+                Alert::error('¡Error!', 'Existe un vehículo registrado con esa placa')
+                    ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
+        
+                return redirect()->back()->withInput();
+            }
+        }
+        
 
         if ($request->hasFile('foto_perfil')) {
             $documentItv = $request->file('foto_perfil');
@@ -241,17 +257,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         // Validar los datos del formulario
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'dni' => 'required|string|max:20',
-            'sector' => 'nullable|string|max:100',
-            'calle' => 'nullable|string|max:100',
-            'casa' => 'nullable|string|max:100',
-            'role' => 'required|string|exists:roles,name',
-            'status' => 'required|string|in:Activo,Inactivo',
-        ]);
+       
 
         // Encontrar el usuario por ID
         $user = User::findOrFail($id);
@@ -340,5 +346,19 @@ class UserController extends Controller
             $response = ['message' => 'Usuario no encontrado'];
             return response()->json($response);
         }
+    }
+    public function export(Request $request)
+    {
+        // Obtener las fechas desde los parámetros de la solicitud
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Validar que las fechas sean proporcionadas
+        if (!$startDate || !$endDate) {
+            return redirect()->back()->withErrors('Debe proporcionar un rango de fechas.');
+        }
+
+        // Generar y devolver el archivo de exportación
+        return Excel::download(new UsuariosExport($startDate, $endDate), 'usuarios.xlsx');
     }
 }

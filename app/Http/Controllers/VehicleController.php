@@ -13,7 +13,13 @@ class VehicleController extends Controller
 {
     public function index(Request $request)
     {
-        $vehiculos = Vehicle::all(); // Fetch vehicles for the authenticated user
+        if(Auth::user()->hasRole('superAdmin')){
+            $vehiculos = Vehicle::orderBy('id', 'DESC')->get(); // Fetch vehicles for the authenticated user
+
+        }elseif(Auth::user()->hasRole('conductor')){
+            $vehiculos = Vehicle::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get(); // Fetch vehicles for the authenticated user
+
+        }
     
         if ($request->ajax()) {
             return DataTables::of($vehiculos)
@@ -91,6 +97,14 @@ class VehicleController extends Controller
             'servicio_id' => 'required|exists:servicios,id',
         ]);
 
+        $placa = Vehicle::where('placa', $request->placa)->first();
+
+        if($placa){
+            Alert::error('¡Error!', 'Existe un vehículo registrado con esa placa')
+            ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
+
+        return redirect()->back()->withInput();
+        }
         // Find the vehicle and update it
         $vehiculo = Vehicle::findOrFail($id);
         $vehiculo->tipo = $request->tipo;

@@ -6,11 +6,11 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="tipo" class="form-label">Tipo</label>
-                <input type="text" class="form-control" id="tipo" name="tipo" value="{{ $tramite->tipo }}" readonly>
+                <input type="text" class="form-control" id="tipo" name="tipo" value="{{ $tramite->tipo ?? '' }}" readonly>
             </div>
             <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripción</label>
-                <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{ $tramite->descripcion }}" readonly>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{ $tramite->descripcion ?? '' }}" readonly>
             </div>
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>
@@ -37,19 +37,19 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="conductor_email" class="form-label">Email del Conductor</label>
-                <input type="email" class="form-control" id="conductor_email" name="conductor_email" value="{{ $conductor->email }}" readonly>
+                <input type="email" class="form-control" id="conductor_email" name="conductor_email" value="{{ $conductor->email ?? '' }}" readonly>
             </div>
             <div class="mb-3">
                 <label for="conductor_dni" class="form-label">DNI del Conductor</label>
-                <input type="text" class="form-control" id="conductor_dni" name="conductor_dni" value="{{ $conductor->dni }}" readonly>
+                <input type="text" class="form-control" id="conductor_dni" name="conductor_dni" value="{{ $conductor->dni ?? '' }}" readonly>
             </div>
             <div class="mb-3">
                 <label for="conductor_sector" class="form-label">Sector del Conductor</label>
-                <input type="text" class="form-control" id="conductor_sector" name="conductor_sector" value="{{ $conductor->sector }}" readonly>
+                <input type="text" class="form-control" id="conductor_sector" name="conductor_sector" value="{{ $conductor->sector ??''}}" readonly>
             </div>
             <div class="mb-3">
                 <label for="conductor_calle" class="form-label">Calle del Conductor</label>
-                <input type="text" class="form-control" id="conductor_calle" name="conductor_calle" value="{{ $conductor->calle }}" readonly>
+                <input type="text" class="form-control" id="conductor_calle" name="conductor_calle" value="{{ $conductor->calle ?? '' }}" readonly>
             </div>
         </div>
     </div>
@@ -58,27 +58,27 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label for="vehiculo_tipo" class="form-label">Tipo de Vehículo</label>
-            <input type="text" class="form-control" id="vehiculo_tipo" value="{{ $vehiculo->tipo }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_tipo" value="{{ $vehiculo->tipo ?? '' }}" readonly>
         </div>
         <div class="col-md-4 mb-3">
             <label for="vehiculo_marca" class="form-label">Marca</label>
-            <input type="text" class="form-control" id="vehiculo_marca" value="{{ $vehiculo->marca }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_marca" value="{{ $vehiculo->marca ?? '' }}" readonly>
         </div>
         <div class="col-md-4 mb-3">
             <label for="vehiculo_modelo" class="form-label">Modelo</label>
-            <input type="text" class="form-control" id="vehiculo_modelo" value="{{ $vehiculo->modelo }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_modelo" value="{{ $vehiculo->modelo ?? '' }}" readonly>
         </div>
         <div class="col-md-4 mb-3">
             <label for="vehiculo_color" class="form-label">Color</label>
-            <input type="text" class="form-control" id="vehiculo_color" value="{{ $vehiculo->color }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_color" value="{{ $vehiculo->color ?? '' }}" readonly>
         </div>
         <div class="col-md-4 mb-3">
             <label for="vehiculo_placa" class="form-label">Placa</label>
-            <input type="text" class="form-control" id="vehiculo_placa" value="{{ $vehiculo->placa }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_placa" value="{{ $vehiculo->placa ?? '' }}" readonly>
         </div>
         <div class="col-md-4 mb-3">
             <label for="vehiculo_anio" class="form-label">Año</label>
-            <input type="text" class="form-control" id="vehiculo_anio" value="{{ $vehiculo->anio }}" readonly>
+            <input type="text" class="form-control" id="vehiculo_anio" value="{{ $vehiculo->anio ??'' }}" readonly>
         </div>
     </div>
 

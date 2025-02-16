@@ -35,9 +35,9 @@ class ViajeController extends Controller
             } elseif ($user->hasRole('cliente')) {
                 // Si es Cliente, obtiene solo los viajes de su usuario
                 $viajes = Viaje::with('user')->where('user_id', $user->id)->orderBy('id', 'DESC')->get();
-            } else {
+            } else {  
                 // Manejo para otros roles si es necesario (opcional)
-                $viajes = collect(); // o puedes manejar un caso diferente
+                $viajes = Viaje::with('user')->where('conductor_id', $user->id)->orderBy('id', 'DESC')->get();
             } // Cargar relaciones con 'vehiculo' y 'user'
 
             return DataTables::of($viajes)
@@ -131,7 +131,9 @@ class ViajeController extends Controller
 
 
         //En caso crear usuario
+
         
+      
         if($request->name && $request->email && $request->cedula && $request->nuevoUser) {
 
             $user = User::create([
@@ -220,7 +222,7 @@ class ViajeController extends Controller
     {
         // Buscar el viaje por su ID
         $viaje = Viaje::with('vehiculo', 'user')->findOrFail($id);
-        $users = User::role('conductor')->get();
+        $users = User::role('conductor')->where('status', 'Activo')->get();
         // Retornar la vista de edición y pasar los datos del viaje
         $origen = json_decode($viaje->origen, true);
         $destino = json_decode($viaje->destino, true);
@@ -251,8 +253,10 @@ class ViajeController extends Controller
             }
 
             $viaje->vehiculo_id = $vehiculo->id;
+            $viaje->conductor_id = $vehiculo->user_id;
         }
 
+        
         $viaje->estado = $request->estado;
 
         if ($request->estado == 'Iniciado') {
@@ -266,9 +270,10 @@ class ViajeController extends Controller
         // Notificar al usuario o a un rol específico como 'superAdmin'
         $viaje->user->notify(new ViajeActualizadoNotification($viaje));
 
-        if ($nuevo && $request->user_id) {
-            $chofer = User::find($vehiculo->user_id);
-
+      
+        if ( isset($viaje->conductor_id)) {
+            $chofer = User::find($viaje->conductor_id);
+          
             if ($chofer) {
                 $chofer->notify(new ViajeAsignacionNotification($viaje));
 

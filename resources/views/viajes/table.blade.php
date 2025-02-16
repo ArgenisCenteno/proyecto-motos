@@ -34,7 +34,6 @@
                 { data: 'id', name: 'id' },
                 { data: 'vehiculo_id', name: 'vehiculo_id' },
                 { data: 'usuario', name: 'usuario' },
-                
                 { data: 'distancia_km', name: 'distancia_km' },
                 { data: 'precio', name: 'precio' },
                 { data: 'estado', name: 'estado' },

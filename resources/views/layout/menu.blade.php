@@ -58,6 +58,32 @@
         <i class="bi bi-wallet2"></i><span>CUENTAS</span>
       </a>
     </li>
+   
+    @if(Auth::user()->hasRole('conductor'))
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('tramites.index')}}">
+        <i class="bi bi-car-front"></i><span>MIS TRAMITES</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('vehiculos.index')}}">
+        <i class="bi bi-car-front"></i><span>MIS VEHICULOS</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('usuarios.index')}}">
+      <i class="bi bi-people"></i><span>PERFIL</span>
+      </a>
+    </li>
+    @endif
+    @if(Auth::user()->hasRole('cliente'))
+   
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('usuarios.index')}}">
+      <i class="bi bi-people"></i><span>PERFIL</span>
+      </a>
+    </li>
+    @endif
     @if(Auth::user()->hasRole('superAdmin'))
     <li class="nav-item">
       <a class="nav-link" href="{{route('reportes.index')}}">

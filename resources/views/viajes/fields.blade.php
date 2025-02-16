@@ -1,3 +1,4 @@
+ 
 <form action="{{ route('viajes.store') }}" method="POST">
     @csrf
     <div>
@@ -36,7 +37,7 @@
                 <label for="sector">
                     <i class="material-icons">location_on</i> Selecciona un sector:
                 </label>
-                <select id="sector" name="sector" class="form-control" readonly>
+                <select id="sector" name="sector" class="form-control" readonly required>
                     <option value="">Seleccione un sector</option>
                     @foreach($sectores as $sector)
                         <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
@@ -289,9 +290,10 @@
                             // Si se encuentra el usuario, mostrar los datos
                             $('#name').val(response.data.name);
                             $('#email').val(response.data.email);
-                            $('#nuevoUser').val('SI');
+                           
                             $('#name, #email').prop('readonly', true); // Hacer los campos de sólo lectura
                         } else {
+                            $('#nuevoUser').val('NO');
                             // Si no se encuentra el usuario, habilitar los campos y mostrar mensaje
                             $('#name').prop('readonly', false).val('');
                             $('#email').prop('readonly', false).val('');

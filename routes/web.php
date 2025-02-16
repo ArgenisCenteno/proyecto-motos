@@ -72,6 +72,8 @@ Route::get('/', function () {
     Route::post('/exportar-pagos', [ReporteController::class, 'exportarPagosExcel'])->name('pagos.exportarExcel');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('exportar-tramites', [TramiteController::class, 'export'])->name('tramites.export');
+    Route::get('exportar-usuarios', [UserController::class, 'export'])->name('usuarios.export');
 
     Route::put('/viajes/{id}/cancelar', [ViajeController::class, 'cancelar'])->name('viajes.cancelar');
 

@@ -16,8 +16,12 @@
                        
                     </div>
                     <div class="">
+                  @if(Auth::user()->hasRole('superAdmin'))
+                    @include('tramites.fields')
+                  @else
+                    @include('tramites.showfields')
                   
-                            @include('tramites.fields')
+                          @endif
                     </div>
                 </div>
             </div>

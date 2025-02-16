@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TramitesExport;
 use App\Models\RegistroConductor;
 use App\Models\Tramite;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Alert;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 class TramiteController extends Controller
 {
@@ -21,7 +23,13 @@ class TramiteController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = Tramite::with('user', 'aprobadoPor', 'revisadoPor')->get(); // Use `with` to eager load roles
+            if(Auth::user()->hasRole('superAdmin')){
+                $users = Tramite::with('user', 'aprobadoPor', 'revisadoPor')->get(); // Use `with` to eager load roles
+    
+            }elseif(Auth::user()->hasRole('conductor')){
+                $users = Tramite::with('user', 'aprobadoPor', 'revisadoPor')->where('user_id',Auth::user()->id )->get(); // Use `with` to eager load roles
+    
+            }
 
             return DataTables::of($users)
 
@@ -153,5 +161,20 @@ class TramiteController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        // Obtener las fechas desde los parámetros de la solicitud
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Validar que las fechas sean proporcionadas
+        if (!$startDate || !$endDate) {
+            return redirect()->back()->withErrors('Debe proporcionar un rango de fechas.');
+        }
+
+        // Generar y devolver el archivo de exportación
+        return Excel::download(new TramitesExport($startDate, $endDate), 'tramites.xlsx');
     }
 }

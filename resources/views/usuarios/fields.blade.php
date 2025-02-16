@@ -146,117 +146,95 @@
         </div>
 
         <div class="row">
-            <h4>Datos del vehículo</h4>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="servicio_id" class="form-label">Servicio</label>
-                    <select class="form-select" id="servicio_id" name="servicio_id" >
-                        <option value="">Selecciona un servicio</option>
-                        @foreach($servicios as $servicio)
-                            <option value="{{ $servicio->id }}">{{ $servicio->descripcion }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-
-                <div class="col-md-6 mb-3">
-                    <label for="tipo" class="form-label">Tipo de Vehículo</label>
-                    <select class="form-select" id="tipo" name="tipo" >
-                        <option value="">Selecciona un tipo de vehículo</option>
-                        <option value="Moto">Moto</option>
-                        <option value="Carro">Carro</option>
-                        <option value="SUV">SUV</option>
-                        <option value="Camioneta">Camioneta</option>
-                        <option value="Deportivo">Deportivo</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-6 mb-3">
-                    <label for="marca" class="form-label">Marca</label>
-                    <input type="text" class="form-control" id="marca" name="marca" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="modelo" class="form-label">Modelo</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="color" class="form-label">Color</label>
-                    <input type="text" class="form-control" id="color" name="color" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="placa" class="form-label">Placa</label>
-                    <input type="text" class="form-control" id="placa" name="placa" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="anio" class="form-label">Año</label>
-                    <input type="number" class="form-control" id="anio" name="anio" >
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="propietario" class="form-label">¿Es propietario?</label>
-                    <select class="form-control" id="propietario" name="propietario" >
-                        <option value="SI">Sí</option>
-                        <option value="NO">No</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-6 mb-3">
-                    <label for="banco">Banco</label>
-                    <select name="banco" id="banco" class="form-control" >
-                        <option value="Banco de Venezuela">Banco de Venezuela</option>
-                        <option value="Banco Mercantil">Banco Mercantil</option>
-                        <option value="Bancaribe">Bancaribe</option>
-                        <option value="Banco Provincial">Banco Provincial</option>
-                        <option value="BBVA">BBVA</option>
-                        <option value="Banco Nacional de Crédito (BNC)">Banco Nacional de Crédito (BNC)</option>
-                        <option value="Banesco">Banesco</option>
-                        <option value="Banco del Tesoro">Banco del Tesoro</option>
-                        <option value="Banco Exterior">Banco Exterior</option>
-                        <option value="Fondo Común">Fondo Común</option>
-                        <option value="Venezolano de Crédito">Venezolano de Crédito</option>
-                        <option value="BFC Banco Fondo Común">BFC Banco Fondo Común</option>
-                    </select>
-                </div>
-
-
-                <div class="col-md-6 mb-3">
-                    <label for="dni">DNI</label>
-                    <input type="text" name="dni2" id="dn2i" class="form-control" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="tipo_cuenta">Tipo de Cuenta</label>
-                    <select name="tipo_cuenta" id="tipo_cuenta" class="form-control" >
-                        <option value="CORRIENTE">CORRIENTE</option>
-                        <option value="AHORRO">AHORRO</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="numero_cuenta">Número de Cuenta</label>
-                    <input type="text" name="numero_cuenta" id="numero_cuenta" class="form-control" >
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="estatus">Estatus</label>
-                    <select name="estatus" id="estatus" class="form-control" >
-                        <option value="ACTIVO">ACTIVO</option>
-                        <option value="INACTIVO">INACTIVO</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="telefono_emergencia">Teléfono de Emergencia</label>
-                    <input type="text" name="telefono_emergencia" id="telefono_emergencia" class="form-control">
-                </div>
-            </div>
-
+    <h4>Datos del vehículo</h4>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="servicio_id" class="form-label">Servicio</label>
+            <select class="form-select @error('servicio_id') is-invalid @enderror" id="servicio_id" name="servicio_id">
+                <option value="">Selecciona un servicio</option>
+                @foreach($servicios as $servicio)
+                    <option value="{{ $servicio->id }}" {{ old('servicio_id') == $servicio->id ? 'selected' : '' }}>
+                        {{ $servicio->descripcion }}
+                    </option>
+                @endforeach
+            </select>
+            @error('servicio_id')
+                <span class="invalid-feedback">{{ $message }}</span>
+            @enderror
         </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="tipo" class="form-label">Tipo de Vehículo</label>
+            <select class="form-select @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
+                <option value="">Selecciona un tipo de vehículo</option>
+                <option value="Moto" {{ old('tipo') == 'Moto' ? 'selected' : '' }}>Moto</option>
+                <option value="Carro" {{ old('tipo') == 'Carro' ? 'selected' : '' }}>Carro</option>
+                <option value="SUV" {{ old('tipo') == 'SUV' ? 'selected' : '' }}>SUV</option>
+                <option value="Camioneta" {{ old('tipo') == 'Camioneta' ? 'selected' : '' }}>Camioneta</option>
+                <option value="Deportivo" {{ old('tipo') == 'Deportivo' ? 'selected' : '' }}>Deportivo</option>
+                <option value="Otro" {{ old('tipo') == 'Otro' ? 'selected' : '' }}>Otro</option>
+            </select>
+            @error('tipo')
+                <span class="invalid-feedback">{{ $message }}</span>
+            @enderror
+        </div>
+
+        @php
+            $fields = [
+                'marca' => 'Marca',
+                'modelo' => 'Modelo',
+                'color' => 'Color',
+                'placa' => 'Placa',
+                'anio' => 'Año',
+                'dni2' => 'DNI',
+                'numero_cuenta' => 'Número de Cuenta',
+                'telefono_emergencia' => 'Teléfono de Emergencia'
+            ];
+        @endphp
+
+        @foreach ($fields as $name => $label)
+            <div class="col-md-6 mb-3">
+                <label for="{{ $name }}" class="form-label">{{ $label }}</label>
+                <input type="{{ $name === 'anio' ? 'number' : 'text' }}" class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" value="{{ old($name) }}">
+                @error($name)
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+        @endforeach
+
+        @php
+            $selectFields = [
+                'propietario' => ['SI' => 'Sí', 'NO' => 'No'],
+                'banco' => [
+                    'Banco de Venezuela', 'Banco Mercantil', 'Bancaribe', 'Banco Provincial',
+                    'BBVA', 'Banco Nacional de Crédito (BNC)', 'Banesco', 'Banco del Tesoro',
+                    'Banco Exterior', 'Fondo Común', 'Venezolano de Crédito', 'BFC Banco Fondo Común'
+                ],
+                'tipo_cuenta' => ['CORRIENTE' => 'CORRIENTE', 'AHORRO' => 'AHORRO'],
+                'estatus' => ['ACTIVO' => 'ACTIVO', 'INACTIVO' => 'INACTIVO']
+            ];
+        @endphp
+
+        @foreach ($selectFields as $name => $options)
+            <div class="col-md-6 mb-3">
+                <label for="{{ $name }}" class="form-label">{{ ucfirst(str_replace('_', ' ', $name)) }}</label>
+                <select class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}">
+                    @foreach ($options as $key => $value)
+                        @if (is_array($options))
+                            <option value="{{ $key }}" {{ old($name) == $key ? 'selected' : '' }}>{{ $value }}</option>
+                        @else
+                            <option value="{{ $value }}" {{ old($name) == $value ? 'selected' : '' }}>{{ $value }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @error($name)
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+        @endforeach
+    </div>
+</div>
+
     </div>
 
     <div class="mt-3">
