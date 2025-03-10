@@ -101,8 +101,8 @@
                     <label for="referencia">
                         <i class="material-icons">receipt</i> Referencia de Transferencia:
                     </label>
-                    <input type="text" id="referencia" name="referencia_transfer" class="form-control" placeholder="Número de referencia">
-                </div>
+                    <input type="text" id="referencia" name="referencia_transfer" class="form-control" placeholder="Número de referencia" oninput="this.value=this.value.replace(/\D/g,'');">
+                    </div>
             </div>
         </div>
 
@@ -143,8 +143,8 @@
                     <label for="referencia_movil">
                         <i class="material-icons">receipt</i> Referencia de Pago Móvil:
                     </label>
-                    <input type="text" id="referencia_movil" name="referencia_movil" class="form-control" placeholder="Número de referencia">
-                </div>
+                    <input type="text" id="referencia_movil" name="referencia_movil" class="form-control" placeholder="Número de referencia" oninput="this.value=this.value.replace(/\D/g,'');">
+                    </div>
             </div>
         </div>
 

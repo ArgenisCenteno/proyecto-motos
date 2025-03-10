@@ -10,8 +10,14 @@
     <div class="row">
         <div class="mb-3 col-md-4">
             <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                value="{{ old('name') }}" required>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+    id="name" 
+    name="name"  
+    value="{{ old('name') }}" 
+    placeholder="Ingrese el nombre"
+    required 
+    oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '')">
+                
             @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -39,8 +45,14 @@
     <div class="row">
         <div class="mb-3 col-md-4">
             <label for="dni" class="form-label">Cédula</label>
-            <input type="text" class="form-control @error('dni') is-invalid @enderror" id="dni" name="dni"
-                value="{{ old('dni') }}" required>
+            <input type="text" class="form-control @error('dni') is-invalid @enderror" 
+    id="dni" 
+    name="dni"  
+    value="{{ old('dni') }}" 
+    placeholder="Ingrese su DNI"
+    required 
+    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
             @error('dni')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -192,15 +204,26 @@
             ];
         @endphp
 
-        @foreach ($fields as $name => $label)
-            <div class="col-md-6 mb-3">
-                <label for="{{ $name }}" class="form-label">{{ $label }}</label>
-                <input type="{{ $name === 'anio' ? 'number' : 'text' }}" class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" value="{{ old($name) }}">
-                @error($name)
-                    <span class="invalid-feedback">{{ $message }}</span>
-                @enderror
-            </div>
-        @endforeach
+@foreach ($fields as $name => $label)
+    <div class="col-md-6 mb-3">
+        <label for="{{ $name }}" class="form-label">{{ $label }}</label>
+        <input type="{{ $name === 'anio' ? 'number' : 'text' }}" 
+            class="form-control @error($name) is-invalid @enderror" 
+            id="{{ $name }}" 
+            name="{{ $name }}" 
+            value="{{ old($name) }}" 
+            @if($name === 'color') 
+                oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')"
+            @elseif($name === 'telefono_emergencia' || $name === 'numero_cuenta') 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            @endif>
+        @error($name)
+            <span class="invalid-feedback">{{ $message }}</span>
+        @enderror
+    </div>
+@endforeach
+
+
 
         @php
             $selectFields = [

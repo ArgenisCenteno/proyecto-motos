@@ -5,7 +5,13 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="descripcion">Nombre</label>
-            <input name="descripcion" value="{{$servicio->descripcion}}" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" placeholder="Ingrese una descripción del servicio" required>{{ old('descripcion') }}</input>
+            <input type="text" name="descripcion" 
+    value="{{ old('descripcion', $servicio->descripcion) }}" 
+    class="form-control @error('descripcion') is-invalid @enderror" 
+    id="descripcion" 
+    placeholder="Ingrese una descripción del servicio" 
+    required 
+    oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')">
             @error('descripcion')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
