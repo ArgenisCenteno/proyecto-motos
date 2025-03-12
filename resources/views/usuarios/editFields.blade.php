@@ -44,18 +44,20 @@
             @enderror
         </div>
 
+        @if(Auth::user()->hasRole('superAdmin'))
         <div class="mb-3 col-md-4">
-            <label for="role" class="form-label">Rol</label>
-            <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
-                <option value="">Selecciona un rol</option>
-                @foreach($roles as $role)
-                    <option value="{{ $role->name }}" {{ $usuario->role == $role->name ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
-                @endforeach
-            </select>
-            @error('role')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+    <label for="role" class="form-label">Rol</label>
+    <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
+        <option value="">Selecciona un rol</option>
+        @foreach($roles as $role)
+            <option value="{{ $role->name }}" {{ $usuario->hasRole($role->name) ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
+        @endforeach
+    </select>
+    @error('role')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+@endif
 
         <div class="mb-3 col-md-4">
             <label for="sector" class="form-label">Sector</label>

@@ -16,7 +16,7 @@
     value="{{ old('name') }}" 
     placeholder="Ingrese el nombre"
     required 
-    oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '')">
+    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
                 
             @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -354,7 +354,7 @@
                     }
                 });
             } else {
-                alert('Por favor ingresa una cédula válida.');
+              //  alert('Por favor ingresa una cédula válida.');
             }
         });
 

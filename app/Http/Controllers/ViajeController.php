@@ -239,13 +239,13 @@ class ViajeController extends Controller
     {
         $viaje = Viaje::find($id);
         $vehiculo = Vehicle::where('user_id', $request->user_id)->first();
-
+       
         $nuevo = true;
 
         if (!$viaje->vehiculo_id) {
             $nuevo = false;
         }
-
+        $conductor = null;
         if ($request->user_id) {
             if (!$vehiculo) {
                 Alert::error('¡Error!', 'Este usuario no tiene vehículo registrado')->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
@@ -254,15 +254,27 @@ class ViajeController extends Controller
 
             $viaje->vehiculo_id = $vehiculo->id;
             $viaje->conductor_id = $vehiculo->user_id;
+
+            $conductor = User::find($vehiculo->user_id);
+            
+            $viaje->estado = $request->estado;
+
         }
 
+       
         
-        $viaje->estado = $request->estado;
-
         if ($request->estado == 'Iniciado') {
             $viaje->hora_salida = now();
+          if($conductor){
+            $conductor->status = 'Trabajando';
+            $conductor->save();
+          }
         } elseif ($request->estado == 'Finalizado') {
             $viaje->hora_llegada = now();
+           if($conductor){
+            $conductor->status = 'Activo';
+            $conductor->save();
+           }
         }
 
         $viaje->save();
@@ -322,6 +334,12 @@ class ViajeController extends Controller
         // Enviar notificación al usuario del viaje
         $viaje->user->notify(new ViajeCanceladoNotification($viaje));
 
+        $conductor = User::find($viaje->conductor_id);
+       
+        if($conductor){
+            $conductor->status = 'Activo';
+            $conductor->save();
+        }
 
         $superAdmins = User::whereHas('roles', function ($query) {
             $query->where('name', 'superAdmin');

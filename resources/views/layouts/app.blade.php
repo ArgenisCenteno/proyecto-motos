@@ -2084,12 +2084,12 @@ section,
                 <nav id="navmenu" class="navmenu">
                     <ul>
                         <li><a href="#hero" class="active">Inicio</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="#about">Empresa</a></li>
                         <li><a href="#services">Servicios</a></li>
                         
                         <li><a href="#pricing">Precios</a></li>
                        
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#contact">Contacto</a></li>
                     </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>

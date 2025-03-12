@@ -14,27 +14,25 @@
                     </div>
                 </div>
                 @if(Auth::user() && Auth::user()->hasRole('superAdmin'))
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label><strong>Usuario:</strong></label>
-                        <select name="user_id" class="form-control" >
-                            <option value="">Seleccionar Usuario</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ isset($viaje->user->id) && $viaje->user->id == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><strong>Usuario:</strong></label>
+                            <select name="user_id" class="form-control">
+                                <option value="">Seleccionar Usuario</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ isset($viaje->user->id) && $viaje->user->id == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
 
-                            @endforeach
-                        </select>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
                 @endif
                 <div class="col-md-3">
                     <div class="form-group">
                         <label><strong>Cliente:</strong></label>
-                        <input type="text" class="form-control"
-                            value="{{  $viaje->user->name  }}"
-                            readonly>
+                        <input type="text" class="form-control" value="{{  $viaje->user->name  }}" readonly>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -52,23 +50,24 @@
             </div>
 
             <div class="row">
-            @if(Auth::user() && Auth::user()->hasRole('superAdmin'))
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label><strong>Estado:</strong></label>
-                        <select name="estado" class="form-control" required>
-                            <option value="Pendiente" {{ $viaje->estado == 'Pendiente' ? 'selected' : '' }}>Pendiente
-                            </option>
-                            <option value="Iniciado" {{ $viaje->estado == 'Iniciado' ? 'selected' : '' }}>Iniciado
-                            </option>
-                            <option value="Finalizado" {{ $viaje->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado
-                            </option>
-                            <option value="Cancelado" {{ $viaje->estado == 'Cancelado' ? 'selected' : '' }}>Cancelado
-                            </option>
-                        </select>
+                @if(Auth::user() && Auth::user()->hasRole('superAdmin'))
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><strong>Estado:</strong></label>
+                            <select name="estado" class="form-control" required {{ $viaje->estado == 'Finalizado' ? 'disabled' : '' }}>
+                                <option value="Pendiente" {{ $viaje->estado == 'Pendiente' ? 'selected' : '' }}>Pendiente
+                                </option>
+                                <option value="Iniciado" {{ $viaje->estado == 'Iniciado' ? 'selected' : '' }}>Iniciado
+                                </option>
+                                <option value="Finalizado" {{ $viaje->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado
+                                </option>
+                                <option value="Cancelado" {{ $viaje->estado == 'Cancelado' ? 'selected' : '' }}>Cancelado
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
                 @endif
+
                 <div class="col-md-3">
                     <div class="form-group">
                         <label><strong>Hora de Salida:</strong></label>
@@ -91,10 +90,10 @@
 
             </div>
             @if(Auth::user() && Auth::user()->hasRole('superAdmin'))
-            <!-- Botón para enviar el formulario -->
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Actualizar Viaje</button>
-            </div>
+                <!-- Botón para enviar el formulario -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Actualizar Viaje</button>
+                </div>
             @endif
         </form>
     </div>
@@ -134,7 +133,7 @@
                     waypoints: [
                         L.latLng({{ $origen['lat'] }}, {{ $origen['lon'] }}),
                     L.latLng({{ $destino['lat'] }}, {{ $destino['lon'] }})
-                        ],
+                                ],
                 routeWhileDragging: true
             }).addTo(map);
         @else
