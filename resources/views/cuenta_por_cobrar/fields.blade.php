@@ -226,4 +226,71 @@
         return isValid;
     }
 </script>
+<script>
+    // Function to validate the reference number length
+    function validateReference(referenceField) {
+        var referenceValue = referenceField.value.replace(/\D/g, ''); // Remove non-numeric characters
+        referenceField.value = referenceValue;
+
+        // Check if the reference number is between 4 and 12 digits
+        if (referenceValue.length >= 4 && referenceValue.length <= 12) {
+            referenceField.classList.remove('is-invalid'); // Remove invalid class
+            referenceField.classList.add('is-valid'); // Add valid class
+            enableSubmitButton(); // Enable the submit button if valid
+        } else {
+            referenceField.classList.remove('is-valid'); // Remove valid class
+            referenceField.classList.add('is-invalid'); // Add invalid class
+            disableSubmitButton(); // Disable the submit button if invalid
+        }
+    }
+
+    // Enable the submit button
+    function enableSubmitButton() {
+        var submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+    }
+
+    // Disable the submit button
+    function disableSubmitButton() {
+        var submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+    }
+
+    // Function to validate all fields before form submission
+    function validateForm() {
+        var isValid = true;
+        var transferFields = document.getElementById('transfer-fields');
+        var pagoMovilFields = document.getElementById('pago-movil-fields');
+
+        if (transferFields.style.display === 'block') {
+            var referencia = document.getElementById('referencia');
+            if (referencia.value.length < 4 || referencia.value.length > 12) {
+                isValid = false;
+                alert('La referencia de transferencia debe tener entre 4 y 12 dígitos.');
+            }
+        }
+
+        if (pagoMovilFields.style.display === 'block') {
+            var referenciaMovil = document.getElementById('referencia_movil');
+            if (referenciaMovil.value.length < 4 || referenciaMovil.value.length > 12) {
+                isValid = false;
+                alert('La referencia de Pago Móvil debe tener entre 4 y 12 dígitos.');
+            }
+        }
+
+        return isValid;
+    }
+
+    // Attach validation to reference input fields
+    document.getElementById('referencia').addEventListener('input', function () {
+        validateReference(this);
+    });
+
+    document.getElementById('referencia_movil').addEventListener('input', function () {
+        validateReference(this);
+    });
+
+    // Disable the submit button initially
+    disableSubmitButton();
+</script>
 @endsection

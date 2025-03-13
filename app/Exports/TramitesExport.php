@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exports;
 
 use App\Models\Tramite;
@@ -27,11 +26,25 @@ class TramitesExport implements FromCollection, WithHeadings, ShouldAutoSize
      */
     public function collection()
     {
+        // Filtra los trámites por el rango de fechas
         return Tramite::whereBetween('created_at', [
                 Carbon::parse($this->startDate)->startOfDay(), 
                 Carbon::parse($this->endDate)->endOfDay()
             ])
-            ->get();  // Filtra por el rango de fechas
+            ->get()
+            ->map(function ($tramite) {
+                // Mapear los datos del trámite a un formato adecuado para la exportación
+                return [
+                    'id' => $tramite->id,
+                    'tipo' => $tramite->tipo,
+                    'descripcion' => $tramite->descripcion,
+                    'estado' => $tramite->estado,
+                    'aprobado_por' => optional($tramite->aprobadoPor)->name, // Usar optional para evitar errores si es nulo
+                    'revisado_por' => optional($tramite->revisadoPor)->name, // Usar optional para evitar errores si es nulo
+                    'fecha_creacion' => $tramite->created_at->format('Y-m-d H:i:s'),
+                    'fecha_actualizacion' => $tramite->updated_at->format('Y-m-d H:i:s'),
+                ];
+            });
     }
 
     /**
