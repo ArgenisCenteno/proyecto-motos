@@ -58,11 +58,11 @@
               <div class="col-md-4">
                 <div class="form-outline">
                   <label class="form-label" for="phone"><strong>Teléfono</strong></label>
-                  <input type="text" id="phone" name="telefono" class="form-control" placeholder="Ingrese teléfono" required pattern="^(0412|0424|0416|0426)[0-9]{7}$" />
+                  <input type="text" id="phone" name="telefono" class="form-control" placeholder="Ingrese teléfono" required pattern="^(0412|0424|0416|0426|0414)[0-9]{7}$" />
                   @error('telefono')
                     <p class="text-danger">{{ $message }}</p>
                   @enderror
-                  <small class="text-danger" id="phoneError" style="display:none;">El teléfono debe tener el formato: 0412xxxxxxx, 0424xxxxxxx, 0416xxxxxxx, 0426xxxxxxx.</small>
+                  <small class="text-danger" id="phoneError" style="display:none;">El teléfono debe tener el formato: 0412xxxxxxx, 0424xxxxxxx, 0416xxxxxxx, 0426xxxxxxx, 0414xxxxxxx.</small>
                 </div>
               </div>
 

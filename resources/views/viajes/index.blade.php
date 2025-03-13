@@ -14,7 +14,7 @@
                             <h3 class="p-2 bold">Viajes</h3>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            @if(Auth::user()->hasRole('superAdmin'))
+                            @if(Auth::user()->hasRole('superAdmin|cliente'))
                             <a href="{{route('viajes.create')}}" class="btn btn-primary  round mx-1" >Registrar</a>
 
                             @endif
