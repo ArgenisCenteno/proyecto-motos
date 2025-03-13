@@ -14,21 +14,23 @@
                     </div>
                 </div>
                 @if(Auth::user() && Auth::user()->hasRole('superAdmin'))
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label><strong>Usuario:</strong></label>
-                            <select name="user_id" class="form-control">
-                                <option value="">Seleccionar Usuario</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ isset($viaje->user->id) && $viaje->user->id == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}
-                                    </option>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label><strong>Usuario:</strong></label>
+            <select name="user_id" class="form-control" 
+                    {{ isset($viaje->conductor_id) ? 'disabled' : '' }}>
+                <option value="">Seleccionar Usuario</option>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" 
+                        {{ isset($viaje->user->id) && $viaje->user->id == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+@endif
 
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                @endif
                 <div class="col-md-3">
                     <div class="form-group">
                         <label><strong>Cliente:</strong></label>
