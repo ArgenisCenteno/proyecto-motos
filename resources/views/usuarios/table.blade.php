@@ -35,9 +35,9 @@
                 { data: 'id', name: 'id' },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
-               
-                { data: 'fecha', name: 'fecha' },
                 { data: 'status', name: 'status' },
+                { data: 'fecha', name: 'fecha' },
+               
                 { data: 'role', name: 'role', orderable: false, searchable: false }, // Add this line for role
                 { data: 'actions', name: 'actions', searchable: false, orderable: false } // Make sure to set orderable and searchable to false
             ],
