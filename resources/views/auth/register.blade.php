@@ -15,7 +15,7 @@
           <h2 class="fw-bold mb-5">Formulario de Registro</h2>
 
           <!-- Formulario de registro -->
-          <form method="POST" action="{{ route('register') }}" id="registerForm">
+          <form method="POST" action="{{ route('register') }}" id="registerForm" novalidate>
             @csrf <!-- Token CSRF para Laravel -->
 
             <!-- Grupo de Nombre, Cédula y Email -->
@@ -23,20 +23,22 @@
               <div class="col-md-4">
                 <div class="form-outline">
                   <label class="form-label" for="name"><strong>Nombre</strong></label>
-                  <input type="text" id="name" name="name" placeholder="Ingrese nombre" class="form-control" required />
+                  <input type="text" id="name" name="name" placeholder="Ingrese nombre" class="form-control" required pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ\s]+$" />
                   @error('name')
                     <p class="text-danger">{{ $message }}</p>
                   @enderror
+                  <small class="text-danger" id="nameError" style="display:none;">El nombre solo debe contener letras y espacios.</small>
                 </div>
               </div>
 
               <div class="col-md-4">
                 <div class="form-outline">
                   <label class="form-label" for="cedula"><strong>Cédula</strong></label>
-                  <input type="text" id="cedula" name="cedula" placeholder="Ingrese cédula" class="form-control" required />
+                  <input type="text" id="cedula" name="cedula" placeholder="Ingrese cédula" class="form-control" required pattern="^[0-9]{7,8}$" />
                   @error('cedula')
                     <p class="text-danger">{{ $message }}</p>
                   @enderror
+                  <small class="text-danger" id="cedulaError" style="display:none;">La cédula debe ser un número de 7 u 8 dígitos.</small>
                 </div>
               </div>
 
@@ -56,10 +58,11 @@
               <div class="col-md-4">
                 <div class="form-outline">
                   <label class="form-label" for="phone"><strong>Teléfono</strong></label>
-                  <input type="text" id="phone" name="telefono" class="form-control" placeholder="Ingrese teléfono" required />
+                  <input type="text" id="phone" name="telefono" class="form-control" placeholder="Ingrese teléfono" required pattern="^(0412|0424|0416|0426)[0-9]{7}$" />
                   @error('telefono')
                     <p class="text-danger">{{ $message }}</p>
                   @enderror
+                  <small class="text-danger" id="phoneError" style="display:none;">El teléfono debe tener el formato: 0412xxxxxxx, 0424xxxxxxx, 0416xxxxxxx, 0426xxxxxxx.</small>
                 </div>
               </div>
 
@@ -104,10 +107,11 @@
               <div class="col-md-4">
                 <div class="form-outline">
                   <label class="form-label" for="password"><strong>Contraseña</strong></label>
-                  <input type="password" id="password" name="password" placeholder="Ingrese contraseña" class="form-control" required />
+                  <input type="password" id="password" name="password" placeholder="Ingrese contraseña" class="form-control" required minlength="8" />
                   @error('password')
                     <p class="text-danger">{{ $message }}</p>
                   @enderror
+                  <small class="text-danger" id="passwordError" style="display:none;">La contraseña debe tener al menos 8 caracteres.</small>
                 </div>
               </div>
 
@@ -128,11 +132,34 @@
             </div>
 
             <!-- Botón de envío -->
-            <button type="submit" class="btn btn-dark btn-lg mb-4">Registrarse</button>
+            <button type="submit" class="btn btn-dark btn-lg mb-4" id="submitButton" disabled>Registrarse</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('registerForm');
+  const submitButton = document.getElementById('submitButton');
+
+  form.addEventListener('input', () => {
+    const nameValid = form.name.validity.valid;
+    const cedulaValid = form.cedula.validity.valid;
+    const phoneValid = form.telefono.validity.valid;
+    const passwordValid = form.password.validity.valid;
+
+    if (nameValid && cedulaValid && phoneValid && passwordValid) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+
+    document.getElementById('nameError').style.display = nameValid ? 'none' : 'block';
+    document.getElementById('cedulaError').style.display = cedulaValid ? 'none' : 'block';
+    document.getElementById('phoneError').style.display = phoneValid ? 'none' : 'block';
+    document.getElementById('passwordError').style.display = passwordValid ? 'none' : 'block';
+  });
+</script>
 @endsection
