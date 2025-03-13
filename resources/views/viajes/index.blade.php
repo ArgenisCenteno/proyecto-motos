@@ -14,7 +14,10 @@
                             <h3 class="p-2 bold">Viajes</h3>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                                <a href="{{route('viajes.create')}}" class="btn btn-primary  round mx-1" >Registrar</a>
+                            @if(Auth::user()->hasRole('superAdmin'))
+                            <a href="{{route('viajes.create')}}" class="btn btn-primary  round mx-1" >Registrar</a>
+
+                            @endif
                         </div>
                     </div>
                     <div >
